@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#3ad67a">
+<meta name="description" content="Barkat — grab orders, deposit PKR or USDT, withdraw to JazzCash or Easypaisa.">
+<title>Barkat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Noto+Nastaliq+Urdu:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --mint:#3ad67a; --ink:#1c2b24; --green:#16a34a; --muted:#3c4a43; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: #e7eef6; color: var(--ink);
+    font-family: Manrope, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  html[lang="ur"] body { font-family: "Noto Nastaliq Urdu", Tahoma, sans-serif; line-height: 1.8; }
+  .ltr { direction: ltr; unicode-bidi: isolate; font-family: Manrope, sans-serif; }
+  [hidden] { display: none !important; }
+  .shell {
+    width: min(100%, 430px); min-height: 100vh; margin: 0 auto; background: #fff;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 12px 40px rgba(20, 40, 70, .08);
+  }
+  .top {
+    background: var(--mint);
+    padding: calc(14px + env(safe-area-inset-top, 0px)) 14px 12px;
+    display: grid; grid-template-columns: auto 1fr auto; column-gap: 10px; align-items: center;
+  }
+  .logo {
+    width: 58px; height: 58px; border-radius: 16px; background: #fff; color: #12824a;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 28px; font-family: Manrope, sans-serif;
+    box-shadow: 0 8px 16px rgba(12, 90, 40, .12);
+  }
+  .brandcopy { min-width: 0; }
+  .brandcopy strong { display: block; font-size: 26px; line-height: 1.05; letter-spacing: -.3px; }
+  .brandcopy span { display: block; margin-top: 2px; color: #173528; font-size: 13px; font-weight: 700; }
+  .badge {
+    width: 58px; height: 66px; flex: none; color: #fff; text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: linear-gradient(180deg, #1e9a4d, #0d6b34);
+    clip-path: polygon(50% 0, 96% 14%, 96% 62%, 50% 100%, 4% 62%, 4% 14%);
+    filter: drop-shadow(0 3px 0 #d7b24a);
+    font-family: Manrope, sans-serif; font-weight: 800; font-size: 13px; line-height: 1;
+    padding-bottom: 6px;
+  }
+  .badge small { display: block; font-size: 7px; letter-spacing: .3px; margin-top: 3px; }
+  .lang { display: inline-flex; margin-top: 6px; background: rgba(255,255,255,.55); border-radius: 999px; padding: 2px; }
+  .lang button {
+    border: 0; background: transparent; height: 26px; padding: 0 10px; border-radius: 999px;
+    font-weight: 800; font-size: 12px; line-height: 26px; color: #245445; cursor: pointer; font-family: Manrope, sans-serif;
+  }
+  .lang button[data-lang="ur"] { font-family: "Noto Nastaliq Urdu", serif; min-width: 46px; padding: 0 12px; }
+  .lang button[aria-pressed="true"] { background: #fff; color: #0e7a45; }
+  h1 { margin: 18px 18px 4px; font-size: 26px; line-height: 1.2; letter-spacing: -.3px; text-align: center; color: var(--green); }
+  html[lang="ur"] h1 { letter-spacing: 0; line-height: 1.7; font-size: 24px; }
+  h1 .g { color: inherit; }
+  .lead { margin: 0 24px 4px; text-align: center; color: #2a3832; font-size: 15px; font-weight: 800; }
+  .stage {
+    position: relative; margin-top: 8px; padding: 16px 4px 4px;
+    background:
+      radial-gradient(circle at 50% 42%, #e7f8ee 0 150px, transparent 151px),
+      radial-gradient(circle at 18% 78%, #e7f8ee 0 36px, transparent 37px),
+      #fff;
+  }
+  .bubbles { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+  .bubble {
+    position: absolute; max-width: 104px; background: #fff; color: #178a48;
+    border-radius: 18px; padding: 8px 10px; font-size: 12px; font-weight: 800; line-height: 1.25;
+    text-align: center; box-shadow: 0 10px 22px rgba(20, 80, 40, .12);
+  }
+  .bubble.b1 { inset-inline-start: 10px; top: 6px; }
+  .bubble.b2 { inset-inline-end: 8px; top: 28px; }
+  .bubble.b3 { inset-inline-start: 8px; top: 92px; }
+  .phone {
+    width: min(72%, 268px); margin: 16px auto 0; position: relative; z-index: 1;
+    border: 7px solid #1b1f1e; border-radius: 28px; overflow: hidden; background: #f4f6f5;
+    box-shadow: 0 18px 36px rgba(9, 40, 30, .16);
+  }
+  .phone-top {
+    background: #01411C; color: #fff; min-height: 40px; padding: 0 12px;
+    display: flex; align-items: center; justify-content: space-between; font-weight: 800;
+  }
+  .phone-top .side { font-family: Manrope, sans-serif; font-size: 12px; opacity: .85; }
+  .phone-body { max-height: 348px; overflow: auto; padding: 8px; }
+  .home-banner { margin: -8px -8px 8px; padding: 10px; background: #01411C; color: #fff; }
+  .home-banner strong { display: block; }
+  .home-banner span { font-family: Manrope, sans-serif; font-size: 12px; opacity: .85; }
+  .bal { background: #fff; border-radius: 12px; padding: 12px; border: 1px solid #e6eeea; }
+  .bal .k { display: flex; justify-content: space-between; gap: 6px; font-size: 11px; font-weight: 800; }
+  .bal .k span:first-child { white-space: nowrap; }
+  .bal .eq { font-family: Manrope, sans-serif; font-size: 11px; color: #999; }
+  .bal .v { margin-top: 6px; display: flex; align-items: center; gap: 8px; font-family: Manrope, sans-serif; font-weight: 800; font-size: 24px; line-height: 1; }
+  .coin { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #ffe08a, #e0a21a 55%, #b7791f); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .pair b, .go, .obuy {
+    display: flex; align-items: center; justify-content: center; height: 38px; border-radius: 10px;
+    font-weight: 800; font-size: 14px;
+  }
+  .pair b.solid, .go, .obuy { background: #01411C; color: #fff; }
+  .pair b.cash { background: #16ac6e; color: #fff; }
+  .block { margin-top: 8px; background: #fff; border: 1px solid #e6eeea; border-radius: 12px; padding: 10px 12px; }
+  .hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 800; font-size: 11px; }
+  .hd .view, .rowlink .view { color: #01411C; font-size: 12px; font-weight: 800; white-space: nowrap; }
+  .prices { margin-top: 8px; background: #f7f8fa; border-radius: 12px; padding: 12px 6px; display: grid; grid-template-columns: 1fr 1px 1fr; }
+  .prices .n { font-family: Manrope, sans-serif; font-weight: 800; font-size: 18px; text-align: center; }
+  .prices .l { text-align: center; color: #999; font-size: 11px; font-weight: 700; }
+  .prices .div { width: 1px; height: 36px; background: #e0e0e0; justify-self: center; }
+  .reward-banner { margin-top: 8px; background: #E8F3EC; color: #01411C; border-radius: 10px; min-height: 42px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 800; text-align: center; padding: 8px; }
+  .rowlink { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 8px 0; border-top: 1px solid #eef2f0; font-size: 13px; font-weight: 700; }
+  .tut-time { font-family: Manrope, sans-serif; font-size: 11px; color: #999; }
+  .seg { display: flex; gap: 14px; font-family: Manrope, sans-serif; font-weight: 800; color: #8a968e; padding-bottom: 8px; }
+  .seg .on { color: #01411C; box-shadow: inset 0 -2px 0 #01411C; }
+  .filters { display: flex; gap: 6px; margin-bottom: 8px; }
+  .filters i, .filters b { height: 30px; border-radius: 8px; display: flex; align-items: center; font-style: normal; font-size: 12px; font-weight: 800; }
+  .filters i { flex: 1; background: #fff; border: 1px solid #e1e8e4; color: #9aa8a0; padding: 0 8px; font-family: Manrope, sans-serif; }
+  .filters b { background: #01411C; color: #fff; padding: 0 8px; font-family: Manrope, sans-serif; }
+  .filters b.ghost { background: #fff; color: #01411C; border: 1px solid #01411C; }
+  .oc { background: #fff; border: 1px solid #e6eeea; border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+  .oc-top, .oc-bot { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+  .oc-top b { font-family: Manrope, sans-serif; font-size: 16px; }
+  .tag { display: inline-block; margin-top: 3px; font-size: 10px; font-weight: 800; color: #01411C; background: #E4F3EA; border-radius: 4px; padding: 1px 6px; font-family: Manrope, sans-serif; }
+  .obuy { height: 28px; padding: 0 12px; font-size: 13px; }
+  .oc-bot { margin-top: 8px; font-size: 12px; color: #6b7a72; }
+  .oc-bot b { display: block; color: #16241D; font-family: Manrope, sans-serif; }
+  .wallet { display: grid; grid-template-columns: 36px 1fr auto; gap: 8px; align-items: center; background: #fff; border: 1px solid #e6eeea; border-radius: 12px; padding: 10px; margin-bottom: 8px; }
+  .wmark { width: 36px; height: 36px; border-radius: 10px; color: #fff; display: flex; align-items: center; justify-content: center; font-family: Manrope, sans-serif; font-weight: 800; }
+  .wmark.jc { background: #b91c1c; } .wmark.ep { background: #16a34a; }
+  .nm { font-family: Manrope, sans-serif; font-weight: 800; } .sub { font-family: Manrope, sans-serif; font-size: 11px; color: #6b7a72; }
+  .pill { font-size: 11px; font-weight: 800; color: #065F32; background: #E4F3EA; border-radius: 999px; padding: 4px 8px; }
+  .stat { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .stat div { background: #fff; border: 1px solid #e6eeea; border-radius: 12px; padding: 10px; }
+  .stat span { display: block; font-size: 11px; color: #6b7a72; } .stat b { font-family: Manrope, sans-serif; }
+  .phone-tabs { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border-top: 1px solid #e6eeea; }
+  .phone-tabs button { border: 0; background: transparent; padding: 8px 2px 10px; font-weight: 800; font-size: 11px; color: #8a968e; cursor: pointer; font-family: inherit; }
+  .phone-tabs button[aria-pressed="true"] { color: #01411C; }
+  .sample { margin: 4px 18px 0; text-align: center; color: #9aa8a0; font-size: 12px; }
+  .invite { margin: 12px 14px 0; background: #f6fffa; border: 1.5px solid #d7f5e4; border-radius: 16px; padding: 12px 14px; }
+  .invite-k { font-size: 12px; font-weight: 800; color: #0e7a45; }
+  .invite-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .invite-code { flex: 1; font-family: Manrope, sans-serif; font-weight: 800; font-size: 20px; letter-spacing: 1px; }
+  .copy { border: 0; background: #fff; color: #0e7a45; height: 32px; padding: 0 12px; border-radius: 8px; font-weight: 800; cursor: pointer; font-family: inherit; box-shadow: 0 4px 10px rgba(16,80,40,.06); }
+  .invite-miss { margin: 4px 0 0; color: #0e7a45; font-size: 13px; }
+  .ios-note { margin: 10px 14px 0; background: #fff6e4; color: #a16207; border-radius: 10px; padding: 8px 10px; font-size: 12px; }
+  .coop {
+    position: relative; margin: 16px 14px 20px; padding: 14px 12px 26px;
+    border: 1.5px solid #8fe7b4; border-radius: 18px; background: linear-gradient(180deg, #f4fff8, #fff);
+  }
+  .coop h2 { margin: 0 0 12px; text-align: center; color: #18a34a; font-size: 22px; }
+  html[lang="ur"] .coop h2 { line-height: 1.6; }
+  .coop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .brand {
+    min-height: 52px; border-radius: 12px; background: #fff;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    font-family: Manrope, sans-serif; font-weight: 800; font-size: 13px; color: #24312c;
+    box-shadow: 0 6px 14px rgba(16, 80, 40, .06); padding: 6px;
+  }
+  .brand.jc { color: #b91c1c; } .brand.ep { color: #16803a; } .brand.usdt { color: #0f766e; }
+  .ribbon {
+    position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 58%); z-index: 2;
+    width: max-content; max-width: 92%; white-space: nowrap; background: #ef3d3d; color: #fff; text-align: center;
+    border-radius: 999px; padding: 8px 16px; font-weight: 800; font-size: 14px; line-height: 1.3;
+    box-shadow: 0 8px 16px rgba(239, 61, 61, .28);
+  }
+  .dock {
+    position: relative; z-index: 1; width: auto; margin: 0;
+    padding: 18px 28px calc(18px + env(safe-area-inset-bottom, 0px));
+    background: transparent; display: flex; flex-direction: column; gap: 8px;
+  }
+  .cta, .cta-ghost {
+    height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    text-decoration: none; font-weight: 800; font-size: 20px; font-family: inherit;
+  }
+  .cta { color: #fff; background: linear-gradient(180deg, #3dce74, #18a34a); box-shadow: 0 10px 18px -10px #18a34a; }
+  .cta-ghost { height: 44px; color: #0e7a45; background: #fff; border: 1.5px solid #b7e0c8; font-size: 15px; }
+  .toast {
+    position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+    background: rgba(16,24,20,.94); color: #fff; padding: 10px 16px; border-radius: 10px;
+    opacity: 0; pointer-events: none; z-index: 30; width: max-content; max-width: calc(100% - 32px);
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="top">
+    <div class="logo" aria-hidden="true">B</div>
+    <div class="brandcopy">
+      <strong class="ltr">Barkat</strong>
+      <span data-i18n="kicker">Your Daily Wallet</span>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang="ur" aria-pressed="false">اردو</button>
+      </div>
+    </div>
+    <div class="badge">100%<small>SECURED</small></div>
+  </header>
+
+  <h1><span class="g" data-i18n="title">Grab an order. Withdraw in rupees.</span></h1>
+  <p class="lead" data-i18n="lead">Deposit PKR or USDT, then cash out to JazzCash or Easypaisa.</p>
+
+  <div class="stage">
+    <div class="bubbles">
+      <span class="bubble b1" data-i18n="b1">+92 to start</span>
+      <span class="bubble b2" data-i18n="b2">JazzCash &amp; Easypaisa</span>
+      <span class="bubble b3" data-i18n="b3">1 eToken = 1 Rs</span>
+    </div>
+    <div class="phone">
+      <div class="phone-top">
+        <span id="phoneTitle">Home</span>
+        <span class="side ltr">Barkat</span>
+      </div>
+      <div class="phone-body">
+        <div class="screen" data-panel="home">
+          <div class="home-banner">
+            <strong data-i18n="bannerTitle">JazzCash · Easypaisa</strong>
+            <span class="ltr">1 eToken = 1 Rs</span>
+          </div>
+          <div class="bal">
+            <div class="k"><span data-i18n="balanceLabel">eToken balance</span><span class="eq ltr">1 eToken = 1 Rs</span></div>
+            <div class="v ltr"><i class="coin"></i>1,280.00</div>
+          </div>
+          <div class="pair">
+            <b class="solid" data-i18n="deposit">Deposit</b>
+            <b class="cash" data-i18n="withdraw">Withdraw</b>
+          </div>
+          <div class="block">
+            <div class="hd"><span data-i18n="usdtDeposit">Deposit eToken with USDT</span><span class="view" data-i18n="goNow">Go Now</span></div>
+            <div class="prices">
+              <div><div class="n ltr">278.50</div><div class="l" data-i18n="marketPrice">Market price</div></div>
+              <div class="div"></div>
+              <div><div class="n ltr">285.40</div><div class="l" data-i18n="ourPrice">Our price</div></div>
+            </div>
+          </div>
+          <div class="block">
+            <div class="hd"><span data-i18n="pkrDeposit">Deposit eToken with PKR</span><span class="view" data-i18n="goNow">Go Now</span></div>
+            <div class="reward-banner"><span aria-hidden="true">🔥</span><span data-i18n="dailyReturn">Up to 50% daily return</span></div>
+          </div>
+          <div class="block">
+            <div class="hd"><span data-i18n="tutorial">Tutorial</span><span class="view" data-i18n="learnMore">Learn more</span></div>
+            <div class="rowlink"><span><span class="tut-time ltr">06-06-2024</span><br><span data-i18n="jazz">How to Add JazzCash</span></span><span class="view" data-i18n="view">View</span></div>
+            <div class="rowlink"><span><span class="tut-time ltr">06-06-2024</span><br><span data-i18n="easy">How to Add Easypaisa</span></span><span class="view" data-i18n="view">View</span></div>
+          </div>
+        </div>
+        <div class="screen" data-panel="market" hidden>
+          <div class="seg"><span class="on">PKR</span><span>USDT</span></div>
+          <div class="filters"><i data-i18n="min">Min</i><i data-i18n="max">Max</i><b data-i18n="go">Go</b><b class="ghost" data-i18n="reset">Reset</b></div>
+          <div class="oc"><div class="oc-top"><div><b class="ltr">1,000 Rs</b></div><span class="obuy" data-i18n="buy">Buy</span></div><div class="oc-bot"><div><span data-i18n="reward">Reward</span><b class="ltr">25.00 · 2.5%</b></div><div><span class="ltr">eToken</span><b class="ltr">+1,025.00</b></div></div></div>
+          <div class="oc"><div class="oc-top"><div><b class="ltr">2,500 Rs</b><div class="tag">BANK</div></div><span class="obuy" data-i18n="buy">Buy</span></div><div class="oc-bot"><div><span data-i18n="reward">Reward</span><b class="ltr">62.50 · 2.5%</b></div><div><span class="ltr">eToken</span><b class="ltr">+2,562.50</b></div></div></div>
+          <div class="oc"><div class="oc-top"><div><b class="ltr">5,000 Rs</b></div><span class="obuy" data-i18n="buy">Buy</span></div><div class="oc-bot"><div><span data-i18n="reward">Reward</span><b class="ltr">125.00 · 2.5%</b></div><div><span class="ltr">eToken</span><b class="ltr">+5,125.00</b></div></div></div>
+        </div>
+        <div class="screen" data-panel="tool" hidden>
+          <div class="block" style="margin-top:0"><div class="hd"><span data-i18n="toolTitle">Tool</span><span class="go" data-i18n="add">Add</span></div></div>
+          <div class="wallet"><div class="wmark jc">JC</div><div><div class="nm ltr">JazzCash</div><div class="sub ltr">03••••••21</div></div><div class="pill" data-i18n="selling">Selling</div></div>
+          <div class="wallet"><div class="wmark ep">EP</div><div><div class="nm ltr">Easypaisa</div><div class="sub ltr">03••••••88</div></div><div class="pill" data-i18n="linked">Linked</div></div>
+        </div>
+        <div class="screen" data-panel="mine" hidden>
+          <div class="bal"><div class="k"><span data-i18n="balanceLabel">eToken balance</span><span class="eq ltr">1 eToken = 1 Rs</span></div><div class="v ltr"><i class="coin"></i>1,280.00</div></div>
+          <div class="stat"><div><span data-i18n="today">Today's earnings</span><b class="ltr">86.40</b></div><div><span data-i18n="total">Total earnings</span><b class="ltr">1,280.00</b></div></div>
+          <div class="block"><div class="rowlink"><span data-i18n="inviteRow">Invite code</span><span class="view ltr">FF2EEGV6</span></div><div class="rowlink"><span data-i18n="bills">Bills</span><span class="view" data-i18n="view">View</span></div></div>
+        </div>
+      </div>
+      <div class="phone-tabs" role="tablist">
+        <button type="button" data-screen="home" aria-pressed="true" data-i18n="tabHome">Home</button>
+        <button type="button" data-screen="market" aria-pressed="false" data-i18n="tabMarket">Market</button>
+        <button type="button" data-screen="tool" aria-pressed="false" data-i18n="tabTool">Tool</button>
+        <button type="button" data-screen="mine" aria-pressed="false" data-i18n="tabMine">Mine</button>
+      </div>
+    </div>
+  </div>
+  <p class="sample" data-i18n="previewNote">A look at the real screens. Numbers here are samples.</p>
+
+  <div class="invite">
+    <div class="invite-k" data-i18n="inviteLabel">Your invitation code</div>
+    <div class="invite-row" id="inviteRow">
+      <span class="invite-code ltr" id="inviteCode">—</span>
+      <button type="button" class="copy" id="copyBtn" data-i18n="copy">Copy</button>
+    </div>
+    <p class="invite-miss" id="inviteMiss" hidden data-i18n="inviteMissing">This link has no invitation code. Ask your inviter to resend a link that includes one.</p>
+  </div>
+  <p class="ios-note" id="iosNote" hidden data-i18n="iosNote">This file is an Android APK. It cannot be installed on iPhone.</p>
+
+  <section class="coop">
+    <h2 data-i18n="coopTitle">Cooperation</h2>
+    <div class="coop-grid">
+      <div class="brand jc ltr">JazzCash</div>
+      <div class="brand ep ltr">Easypaisa</div>
+      <div class="brand ltr">PKR</div>
+      <div class="brand usdt ltr">USDT</div>
+      <div class="brand ltr">eToken</div>
+      <div class="brand ltr">1 : 1 Rs</div>
+    </div>
+    <div class="ribbon" data-i18n="dailyReturn">Up to 50% daily return</div>
+  </section>
+  <footer class="dock">
+    <a class="cta" data-register href="https://agent.tdpayment.com/#/pages/register?app=&amp;web=1" data-i18n="register">Register</a>
+    <a class="cta-ghost" data-download href="https://github.com/indiapay23/apk/releases/download/PK/Barkat-1.6.3.apk" data-i18n="downloadShort">Get APK</a>
+  </footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+(function () {
+  var REGISTER_BASE = "https://agent.tdpayment.com/#/pages/register?app=&web=1";
+  var APK_URL = "https://github.com/indiapay23/apk/releases/download/PK/Barkat-1.6.3.apk";
+  var DEFAULT_PIXEL_ID = "924087033975243";
+  var LANDING_API = "https://backend.tdpayment.com/backend/agent/landingEvent";
+
+  var I18N = {
+    en: {
+      docTitle: "Barkat — Register & Download",
+      kicker: "Your Daily Wallet",
+      title: "Grab an order. Withdraw in rupees.",
+      lead: "Deposit PKR or USDT, then cash out to JazzCash or Easypaisa.",
+      b1: "+92 to start",
+      b2: "JazzCash & Easypaisa",
+      b3: "1 eToken = 1 Rs",
+      coopTitle: "Cooperation",
+      inviteLabel: "Your invitation code",
+      inviteMissing: "This link has no invitation code. Ask your inviter to resend a link that includes one.",
+      copy: "Copy",
+      copied: "Code copied",
+      copyFail: "Could not copy. Please copy it yourself.",
+      previewTitle: "Inside the app",
+      previewNote: "A look at the real screens. Numbers here are samples.",
+      tabHome: "Home",
+      tabMarket: "Market",
+      tabTool: "Tool",
+      tabMine: "Mine",
+      balanceLabel: "eToken balance",
+      deposit: "Deposit",
+      withdraw: "Withdraw",
+      bannerTitle: "JazzCash · Easypaisa",
+      pkrDeposit: "Deposit eToken with PKR",
+      usdtDeposit: "Deposit eToken with USDT",
+      dailyReturn: "Up to 50% daily return",
+      learnMore: "Learn more",
+      goNow: "Go Now",
+      marketPrice: "Market price",
+      ourPrice: "Our price",
+      tutorial: "Tutorial",
+      jazz: "How to Add JazzCash",
+      easy: "How to Add Easypaisa",
+      view: "View",
+      min: "Min",
+      max: "Max",
+      go: "Go",
+      reset: "Reset",
+      buy: "Buy",
+      reward: "Reward",
+      toolTitle: "Tool",
+      add: "Add",
+      selling: "Selling",
+      linked: "Linked",
+      today: "Today's earnings",
+      total: "Total earnings",
+      bills: "Bills",
+      inviteRow: "Invite code",
+      langRow: "Language",
+      register: "Register",
+      download: "Download",
+      downloadShort: "Get APK",
+      iosNote: "This file is an Android APK. It cannot be installed on iPhone.",
+      howTitle: "How to start",
+      s1k: "Step 1", s1t: "Open this link",
+      s1d: "Your inviter’s code is already on this page. You do not need to type it.",
+      s2k: "Step 2", s2t: "Register",
+      s2d: "Use a Pakistan mobile number (+92) and a password of at least 6 characters. The invitation code is filled in for you.",
+      s3k: "Step 3", s3t: "Download Barkat",
+      s3d: "Install the Android app (Barkat 1.6.3) and log in with the same phone number.",
+      featTitle: "What you can do",
+      f1t: "Deposit PKR or USDT", f1d: "Buy eToken inside the app with rupees or USDT.",
+      f2t: "Withdraw 1 : 1", f2d: "When you cash out, 1 eToken equals 1 rupee, to JazzCash or Easypaisa.",
+      f3t: "Invite your team", f3d: "Share your own code. Rebates follow the trades of people you invite.",
+      f4t: "English & Urdu", f4d: "The app and this page both switch language.",
+      faqTitle: "Questions",
+      q1: "Where does the invitation code go?",
+      a1: "Register opens the Barkat sign-up page with your code already attached. You only enter your phone number and password.",
+      q2: "What if this page shows no code?",
+      a2: "The link was opened without one. Ask the person who invited you to resend their link, then register from that page.",
+      q3: "Which phone can install the app?",
+      a3: "Android. The file is Barkat 1.6.3 APK. After download, allow installation from this source if your phone asks."
+    },
+    ur: {
+      docTitle: "برکت — رجسٹر اور ڈاؤن لوڈ",
+      kicker: "روزانہ والیٹ",
+      title: "آرڈر پکڑیں۔ روپے میں نکالیں۔",
+      lead: "PKR یا USDT جمع کریں، پھر JazzCash یا Easypaisa پر نکالیں۔",
+      b1: "+92 سے شروع",
+      b2: "JazzCash اور Easypaisa",
+      b3: "1 eToken = 1 روپیہ",
+      coopTitle: "شراکت",
+      inviteLabel: "آپ کا دعوت کوڈ",
+      inviteMissing: "اس لنک میں دعوت کوڈ نہیں ہے۔ اپنے مدعو کنندہ سے وہ لنک دوبارہ مانگیں جس میں کوڈ شامل ہو۔",
+      copy: "کاپی",
+      copied: "کوڈ کاپی ہو گیا",
+      copyFail: "کاپی نہیں ہو سکا۔ براہ کرم خود کاپی کریں۔",
+      previewTitle: "ایپ کے اندر",
+      previewNote: "اصل اسکرینوں کا نمونہ۔ یہاں نمبر صرف مثال ہیں۔",
+      tabHome: "ہوم",
+      tabMarket: "مارکیٹ",
+      tabTool: "ٹول",
+      tabMine: "میرا",
+      balanceLabel: "eToken بیلنس",
+      deposit: "ڈپازٹ",
+      withdraw: "نکالیں",
+      bannerTitle: "JazzCash · Easypaisa",
+      pkrDeposit: "PKR سے eToken جمع",
+      usdtDeposit: "USDT سے eToken جمع",
+      dailyReturn: "روزانہ 50% تک منافع",
+      learnMore: "مزید جانیں",
+      goNow: "اب جائیں",
+      marketPrice: "مارکیٹ قیمت",
+      ourPrice: "ہماری قیمت",
+      tutorial: "ٹیوٹوریل",
+      jazz: "JazzCash کیسے شامل کریں",
+      easy: "Easypaisa کیسے شامل کریں",
+      view: "دیکھیں",
+      min: "کم",
+      max: "زیادہ",
+      go: "جائیں",
+      reset: "ری سیٹ",
+      buy: "خریدیں",
+      reward: "انعام",
+      toolTitle: "ٹول",
+      add: "شامل کریں",
+      selling: "فروخت",
+      linked: "منسلک",
+      today: "آج کی کمائی",
+      total: "کل کمائی",
+      bills: "بلز",
+      inviteRow: "دعوت کوڈ",
+      langRow: "زبان",
+      register: "رجسٹر کریں",
+      download: "ڈاؤن لوڈ",
+      downloadShort: "APK لیں",
+      iosNote: "یہ فائل اینڈرائیڈ APK ہے۔ آئی فون پر انسٹال نہیں ہوتی۔",
+      howTitle: "شروع کیسے کریں",
+      s1k: "مرحلہ 1", s1t: "یہ لنک کھولیں",
+      s1d: "مدعو کنندہ کا کوڈ اس صفحے پر پہلے سے موجود ہے۔ اسے ٹائپ کرنے کی ضرورت نہیں۔",
+      s2k: "مرحلہ 2", s2t: "رجسٹر کریں",
+      s2d: "پاکستانی موبائل نمبر (+92) اور کم از کم 6 حروف کا پاس ورڈ استعمال کریں۔ دعوت کوڈ خود بھر جاتا ہے۔",
+      s3k: "مرحلہ 3", s3t: "برکت ڈاؤن لوڈ کریں",
+      s3d: "اینڈرائیڈ ایپ (Barkat 1.6.3) انسٹال کریں اور اسی فون نمبر سے لاگ ان کریں۔",
+      featTitle: "آپ کیا کر سکتے ہیں",
+      f1t: "PKR یا USDT جمع", f1d: "ایپ میں روپے یا USDT سے eToken خریدیں۔",
+      f2t: "1 : 1 نکالیں", f2d: "نکالتے وقت 1 eToken برابر 1 روپیہ، JazzCash یا Easypaisa پر۔",
+      f3t: "اپنی ٹیم بلائیں", f3d: "اپنا کوڈ شیئر کریں۔ جنہیں آپ بلاتے ہیں، ان کی ٹریڈز پر ریبیٹ ملتا ہے۔",
+      f4t: "English اور اردو", f4d: "ایپ اور یہ صفحہ دونوں زبان بدل سکتے ہیں۔",
+      faqTitle: "سوالات",
+      q1: "دعوت کوڈ کہاں جاتا ہے؟",
+      a1: "رجسٹر بٹن برکت کے سائن اپ صفحے کو کوڈ کے ساتھ کھولتا ہے۔ آپ صرف فون نمبر اور پاس ورڈ لکھتے ہیں۔",
+      q2: "اگر اس صفحے پر کوڈ نہ ہو؟",
+      a2: "لنک بغیر کوڈ کے کھلا ہے۔ جس نے آپ کو بلایا ہے، اس سے لنک دوبارہ مانگیں، پھر اسی صفحے سے رجسٹر کریں۔",
+      q3: "ایپ کس فون پر لگے گی؟",
+      a3: "اینڈرائیڈ پر۔ فائل Barkat 1.6.3 APK ہے۔ ڈاؤن لوڈ کے بعد اگر فون پوچھے تو اس ذریعے سے انسٹال کی اجازت دیں۔"
+    }
+  };
+
+  function readParam(search, key) {
+    if (!search) return "";
+    var raw = search.charAt(0) === "?" ? search.slice(1) : search;
+    var params = new URLSearchParams(raw);
+    return (params.get(key) || "").trim();
+  }
+
+  function searchSources() {
+    var sources = [location.search || ""];
+    var hash = location.hash || "";
+    var q = hash.indexOf("?");
+    if (q >= 0) sources.push(hash.slice(q + 1));
+    return sources;
+  }
+
+  function readCode() {
+    var keys = ["inviteCode", "invitationCode", "invite", "code"];
+    var sources = searchSources();
+    for (var s = 0; s < sources.length; s++) {
+      for (var i = 0; i < keys.length; i++) {
+        var value = readParam(sources[s], keys[i]);
+        if (/^[A-Za-z0-9_-]{1,64}$/.test(value)) return value;
+      }
+    }
+    return "";
+  }
+
+  function decodeAdData(raw) {
+    if (!raw) return {};
+    try {
+      var normalized = String(raw).replace(/ /g, "+").replace(/-/g, "+").replace(/_/g, "/");
+      var pad = normalized.length % 4;
+      if (pad) normalized += "====".slice(0, 4 - pad);
+      var params = new URLSearchParams(atob(normalized));
+      var pixel = (params.get("n_fb_pixelId") || "").trim();
+      var invite = (
+        params.get("inviteCode") ||
+        params.get("invitationCode") ||
+        params.get("invite") ||
+        ""
+      ).trim();
+      var channel = (params.get("channel") || "").trim();
+      return {
+        pixelId: /^\d{5,20}$/.test(pixel) ? pixel : "",
+        inviteCode: /^[A-Za-z0-9_-]{1,64}$/.test(invite) ? invite : "",
+        channel: /^\d{1,12}$/.test(channel) ? channel : "",
+      };
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function readAttribution() {
+    var dataRaw = "";
+    var fbclid = "";
+    var pixelQuery = "";
+    var sources = searchSources();
+    for (var i = 0; i < sources.length; i++) {
+      if (!dataRaw) dataRaw = readParam(sources[i], "data");
+      if (!fbclid) fbclid = readParam(sources[i], "fbclid");
+      if (!pixelQuery) pixelQuery = readParam(sources[i], "n_fb_pixelId");
+    }
+    var parsed = decodeAdData(dataRaw);
+    var pixelFromUrl = parsed.pixelId || "";
+    if (!pixelFromUrl && /^\d{5,20}$/.test(pixelQuery)) pixelFromUrl = pixelQuery;
+    if (fbclid && !/^[\w\-.]{1,200}$/.test(fbclid)) fbclid = "";
+    return {
+      active: !!(dataRaw && (pixelFromUrl || parsed.channel)) || !!pixelFromUrl,
+      rawData: dataRaw,
+      pixelId: pixelFromUrl || DEFAULT_PIXEL_ID,
+      inviteCode: parsed.inviteCode || "",
+      channel: parsed.channel || "",
+      fbclid: fbclid,
+    };
+  }
+
+  function registerUrl(code, attr) {
+    var url = REGISTER_BASE;
+    if (code) url += "&inviteCode=" + encodeURIComponent(code);
+    if (attr.rawData) url += "&data=" + encodeURIComponent(attr.rawData);
+    else if (attr.pixelId) {
+      var payload = "uid=0&business_id=0&channel=" + (attr.channel || "0") + "&n_fb_pixelId=" + attr.pixelId;
+      url += "&data=" + encodeURIComponent(btoa(payload));
+    }
+    if (attr.pixelId) url += "&n_fb_pixelId=" + encodeURIComponent(attr.pixelId);
+    if (attr.fbclid) url += "&fbclid=" + encodeURIComponent(attr.fbclid);
+    if (clickId) {
+      url += "&clickId=" + encodeURIComponent(clickId);
+      url += "&source=" + encodeURIComponent(landingSource || "fb");
+    }
+    return url;
+  }
+
+  var clickId = "";
+  var landingSource = "fb";
+  var landingReady = null;
+
+  function requestJson(method, url, body) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+      xhr.timeout = 8000;
+      if (body) xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState !== 4) return;
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try { resolve(JSON.parse(xhr.responseText || "{}")); }
+          catch (e) { reject(e); }
+        } else {
+          reject(new Error("http"));
+        }
+      };
+      xhr.onerror = function () { reject(new Error("network")); };
+      xhr.ontimeout = function () { reject(new Error("timeout")); };
+      xhr.send(body ? JSON.stringify(body) : null);
+    });
+  }
+
+  function landingStatDate() {
+    var d = new Date();
+    var m = d.getMonth() + 1;
+    var day = d.getDate();
+    return d.getFullYear() + "-" + (m < 10 ? "0" : "") + m + "-" + (day < 10 ? "0" : "") + day;
+  }
+
+  function readLandingSource() {
+    var sources = searchSources();
+    for (var i = 0; i < sources.length; i++) {
+      var value = readParam(sources[i], "source");
+      if (/^[A-Za-z0-9_-]{1,32}$/.test(value)) return value;
+    }
+    return "fb";
+  }
+
+  function saveLandingEvent(eventType, remark) {
+    if (!clickId) return Promise.resolve();
+    return requestJson("POST", LANDING_API + "/save", {
+      source: landingSource,
+      eventType: String(eventType),
+      clickId: clickId,
+      statDate: landingStatDate(),
+      remark: remark
+    }).then(function () {}, function () {});
+  }
+
+  function refreshRegisterLinks() {
+    var next = registerUrl(code, attr);
+    document.querySelectorAll("[data-register]").forEach(function (el) {
+      el.href = next;
+    });
+    return next;
+  }
+
+  function startLanding() {
+    landingSource = readLandingSource();
+    landingReady = requestJson("GET", LANDING_API + "/genClickId").then(function (body) {
+      var id = body && Number(body.code) === 0 ? String(body.data || "").trim() : "";
+      if (!id || /\s/.test(id) || id.length > 128) throw new Error("clickId");
+      clickId = id;
+      refreshRegisterLinks();
+      return saveLandingEvent("1", "落地页加载");
+    }).catch(function () {});
+  }
+
+  function rememberFbclid(fbclid) {
+    if (!fbclid) return;
+    var value = "fb.1." + Date.now() + "." + fbclid;
+    document.cookie = "_fbc=" + value + "; path=/; max-age=7776000; SameSite=Lax";
+  }
+
+  var pixelReady = false;
+  function initFbPixel(pixelId) {
+    if (!pixelId) return;
+    rememberFbclid(attr.fbclid);
+    if (!window.fbq) {
+      var n = window.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!window._fbq) window._fbq = n;
+      n.push = n;
+      n.loaded = true;
+      n.version = "2.0";
+      n.queue = [];
+      var script = document.createElement("script");
+      script.async = true;
+      script.src = "https://connect.facebook.net/en_US/fbevents.js";
+      script.onload = function () { pixelReady = true; };
+      script.onerror = function () { pixelReady = true; };
+      var first = document.getElementsByTagName("script")[0];
+      if (first && first.parentNode) first.parentNode.insertBefore(script, first);
+      else document.head.appendChild(script);
+    } else {
+      pixelReady = true;
+    }
+    window.fbq("init", pixelId);
+    window.fbq("track", "PageView");
+  }
+
+  var pendingAction = false;
+  function trackThen(url, eventName, event, eventType, remark) {
+    event.preventDefault();
+    if (pendingAction) return;
+    pendingAction = true;
+    if (attr.pixelId && window.fbq) window.fbq("trackCustom", eventName);
+    var start = Date.now();
+    var gone = false;
+    var dest = url;
+    var pixelDone = !attr.pixelId;
+    var saveDone = false;
+    function go(nextUrl) {
+      if (gone) return;
+      gone = true;
+      pendingAction = false;
+      location.href = nextUrl;
+    }
+    function maybeGo() {
+      if (!pixelDone && (pixelReady || Date.now() - start > 1200)) pixelDone = true;
+      if (pixelDone && saveDone) go(dest);
+    }
+    (function tick() {
+      if (pixelDone || pixelReady || Date.now() - start > 1200) {
+        pixelDone = true;
+        maybeGo();
+      } else {
+        setTimeout(tick, 40);
+      }
+    })();
+    setTimeout(function () {
+      if (eventType === "2" && clickId) dest = refreshRegisterLinks();
+      saveDone = true;
+      pixelDone = true;
+      go(dest);
+    }, 2500);
+    (landingReady || Promise.resolve()).then(function () {
+      if (eventType === "2") dest = refreshRegisterLinks();
+      return saveLandingEvent(eventType, remark);
+    }).then(function () {
+      saveDone = true;
+      maybeGo();
+    }, function () {
+      saveDone = true;
+      maybeGo();
+    });
+  }
+
+  var lang = "en";
+  function t(key) {
+    return (I18N[lang] && I18N[lang][key]) || I18N.en[key] || key;
+  }
+
+  function applyLang(next) {
+    lang = next === "ur" ? "ur" : "en";
+    var root = document.documentElement;
+    root.lang = lang;
+    root.dir = lang === "ur" ? "rtl" : "ltr";
+    document.title = t("docTitle");
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      el.textContent = t(el.getAttribute("data-i18n"));
+    });
+    document.querySelectorAll(".lang button").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-lang") === lang));
+    });
+    var phoneTitle = document.getElementById("phoneTitle");
+    var current = document.querySelector(".phone-tabs button[aria-pressed='true']");
+    if (phoneTitle && current) phoneTitle.textContent = t(current.getAttribute("data-i18n"));
+    try { localStorage.setItem("barkat_lang", lang); } catch (e) {}
+  }
+
+  document.querySelectorAll(".phone-tabs button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var name = btn.getAttribute("data-screen");
+      document.querySelectorAll(".phone-tabs button").forEach(function (item) {
+        item.setAttribute("aria-pressed", String(item === btn));
+      });
+      document.querySelectorAll(".screen").forEach(function (panel) {
+        panel.hidden = panel.getAttribute("data-panel") !== name;
+      });
+      var phoneTitle = document.getElementById("phoneTitle");
+      if (phoneTitle) phoneTitle.textContent = t(btn.getAttribute("data-i18n"));
+    });
+  });
+
+  var attr = readAttribution();
+  var code = readCode() || attr.inviteCode;
+  var codeEl = document.getElementById("inviteCode");
+  var rowEl = document.getElementById("inviteRow");
+  var missEl = document.getElementById("inviteMiss");
+  var inviteBox = document.querySelector(".invite");
+  var signup = registerUrl(code, attr);
+  document.querySelectorAll("[data-register]").forEach(function (el) {
+    el.href = signup;
+    el.addEventListener("click", function (event) {
+      trackThen(registerUrl(code, attr), "register_click", event, "2", "注册按钮点击");
+    });
+  });
+  document.querySelectorAll("[data-download]").forEach(function (el) {
+    el.href = APK_URL;
+    el.addEventListener("click", function (event) {
+      trackThen(APK_URL, "download_click", event, "3", "下载app");
+    });
+  });
+  startLanding();
+
+  if (code) {
+    codeEl.textContent = code;
+    inviteBox.hidden = false;
+    rowEl.hidden = false;
+    missEl.hidden = true;
+  } else if (attr.active) {
+    inviteBox.hidden = true;
+  } else {
+    inviteBox.hidden = false;
+    rowEl.hidden = true;
+    missEl.hidden = false;
+  }
+  if (attr.pixelId) initFbPixel(attr.pixelId);
+
+  var ios = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  document.getElementById("iosNote").hidden = !ios;
+
+  var toastTimer;
+  function toast(msg) {
+    var el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.classList.remove("show"); }, 1800);
+  }
+
+  document.getElementById("copyBtn").addEventListener("click", function () {
+    if (!code) return;
+    function ok() { toast(t("copied")); }
+    function fail() { toast(t("copyFail")); }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(ok, function () {
+        fallbackCopy(ok, fail);
+      });
+    } else {
+      fallbackCopy(ok, fail);
+    }
+  });
+
+  function fallbackCopy(ok, fail) {
+    var input = document.createElement("textarea");
+    input.value = code;
+    input.setAttribute("readonly", "");
+    input.style.position = "fixed";
+    input.style.left = "-9999px";
+    document.body.appendChild(input);
+    input.select();
+    var done = false;
+    try { done = document.execCommand("copy"); } catch (e) { done = false; }
+    document.body.removeChild(input);
+    if (done) ok(); else fail();
+  }
+
+  document.querySelectorAll(".lang button").forEach(function (btn) {
+    btn.addEventListener("click", function () { applyLang(btn.getAttribute("data-lang")); });
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem("barkat_lang"); } catch (e) {}
+  var fromQuery = readParam(location.search, "lang");
+  var prefersUrdu = (navigator.language || "").toLowerCase().indexOf("ur") === 0;
+  applyLang(fromQuery || saved || (prefersUrdu ? "ur" : "en"));
+})();
+</script>
+</body>
+</html>
